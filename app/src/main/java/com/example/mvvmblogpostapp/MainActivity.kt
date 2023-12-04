@@ -11,10 +11,13 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.mvvmblogpostapp.blog_post_features.presentation.blog_post_info.BlogPostInfoScreen
 import com.example.mvvmblogpostapp.blog_post_features.presentation.blog_post_list.BlogPostItemScreen
 import com.example.mvvmblogpostapp.blog_post_features.presentation.blog_post_list.BlogPostListViewModel
 import com.example.mvvmblogpostapp.core.navigation.Route
@@ -56,6 +59,21 @@ class MainActivity : ComponentActivity() {
                                                  navController.navigate(it.route)
                                     },
                                     blogPostItem = blogPost,
+                                    scaffoldState = scaffoldState
+                                )
+                            }
+
+                            composable(
+                                route = Route.blogPostDetailsScreen + "?postId={postId}",
+                                arguments = listOf(
+                                    navArgument("postId"){
+                                        type = NavType.IntType
+                                    }
+                                )
+                            ){
+                                val postId = it.arguments?.getInt("postId") ?: return@composable
+                                BlogPostInfoScreen(
+                                    postId = postId,
                                     scaffoldState = scaffoldState
                                 )
                             }

@@ -16,13 +16,13 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.example.mvvmblogpostapp.blog_post_features.domain.model.BlogPost
 import com.example.mvvmblogpostapp.blog_post_features.presentation.blog_post_list.component.BlogPostListItem
+import com.example.mvvmblogpostapp.core.navigation.Route
 import com.example.mvvmblogpostapp.core.utils.UiEvent
 
 @Composable
 fun BlogPostItemScreen(
     onNavigate: (UiEvent.Navigate) -> Unit,
     blogPostItem: LazyPagingItems<BlogPost>,
-//    viewModel: BlogPostListViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState
 ) {
 
@@ -47,24 +47,28 @@ fun BlogPostItemScreen(
             )
         }else {
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(blogPostItem) { blog ->
-                    if (blog !== null) {
-                        BlogPostListItem(
-                            blogPost = blog ,
-                            onClick = {
-                                // Navigate to Blog post Detail Screen
-                            })
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(blogPostItem) { blog ->
+                        if(blog != null) {
+                           BlogPostListItem(
+                               blogPost = blog,
+                               onClick = {
+                                   // Navigate to BlogPost Detail Screen
+                                   onNavigate(UiEvent.Navigate(
+                                       Route.blogPostDetailsScreen + "?postId=${blog.id}"
+                                   ))
+                               }
+                           )
+                        }
                     }
-                }
-                item{
-                    if (blogPostItem.loadState.append is LoadState.Loading) {
-                        CircularProgressIndicator()
+                    item {
+                        if(blogPostItem.loadState.append is LoadState.Loading) {
+                            CircularProgressIndicator()
+                        }
                     }
-                }
             }
         }
     }

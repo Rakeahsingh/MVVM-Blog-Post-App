@@ -9,7 +9,7 @@ data class BlogPostDetail(
     val title: String,
     val content: String,
     val date: String,
-    val jetpack_related_posts: List<JetpackRelatedPostX>,
+//    val jetpack_related_posts: List<JetpackRelatedPostX>,
     val jetpack_featured_media_url: String,
     val slug: String,
 )

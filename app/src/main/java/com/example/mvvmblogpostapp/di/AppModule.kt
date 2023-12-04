@@ -9,6 +9,9 @@ import com.example.mvvmblogpostapp.blog_post_features.data.local.BlogPostDatabas
 import com.example.mvvmblogpostapp.blog_post_features.data.local.entities.BlogPostEntity
 import com.example.mvvmblogpostapp.blog_post_features.data.remote.BlogPostApi
 import com.example.mvvmblogpostapp.blog_post_features.data.remote.BlogPostRemoteMediator
+import com.example.mvvmblogpostapp.blog_post_features.data.repository.BlogPostRepositoryImpl
+import com.example.mvvmblogpostapp.blog_post_features.domain.repository.BlogPostRepository
+import com.example.mvvmblogpostapp.blog_post_features.domain.use_case.BlogPostUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +22,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
+@OptIn(ExperimentalPagingApi::class)
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -54,7 +58,7 @@ object AppModule {
             .build()
     }
 
-    @OptIn(ExperimentalPagingApi::class)
+
     @Provides
     @Singleton
     fun provideBlogpostPager(
@@ -62,7 +66,7 @@ object AppModule {
         db: BlogPostDatabase
     ): Pager<Int, BlogPostEntity>{
         return Pager(
-            config = PagingConfig(pageSize = 10),
+            config = PagingConfig(pageSize = 20),
             remoteMediator = BlogPostRemoteMediator(
                 api = api,
                 db = db
@@ -71,6 +75,22 @@ object AppModule {
                 db.dao.pagingSource()
             }
         )
+    }
+
+    @Provides
+    @Singleton
+    fun providesRepository(
+        api: BlogPostApi
+    ): BlogPostRepository{
+        return BlogPostRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUseCase(
+        repository: BlogPostRepository
+    ): BlogPostUseCase{
+        return BlogPostUseCase(repository)
     }
 
 }

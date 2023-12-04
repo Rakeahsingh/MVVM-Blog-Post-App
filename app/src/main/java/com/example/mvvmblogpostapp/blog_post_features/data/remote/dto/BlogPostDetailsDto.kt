@@ -6,7 +6,7 @@ data class BlogPostDetailsDto(
     val title: TitleX,
     val content: ContentX,
     val date: String,
-    val jetpack_related_posts: List<JetpackRelatedPostX>,
+//    val jetpack_related_posts: List<JetpackRelatedPostX>,
     val jetpack_featured_media_url: String,
     val slug: String,
 
