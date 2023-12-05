@@ -71,11 +71,14 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                             ){
-                                val postId = it.arguments?.getInt("postId") ?: return@composable
-                                BlogPostInfoScreen(
-                                    postId = postId,
-                                    scaffoldState = scaffoldState
-                                )
+                                val postId = it.arguments?.getInt("postId")
+                                if (postId != null){
+                                    BlogPostInfoScreen(
+                                        postId = postId,
+                                        scaffoldState = scaffoldState
+                                    )
+                                }
+
                             }
                         }
 
